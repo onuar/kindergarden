@@ -17,7 +17,8 @@
 ## sample-host
 * cd sample-host
 * npm install
-* ./farm-runner (on windows farm-runner.bat)
+* chmod +x ./farm-runner (on unix-based)
+* sudo sh ./farm-runner (on windows farm-runner.bat)
 
 # Docs:
 * werkzeug: http://werkzeug.pocoo.org/
