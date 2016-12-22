@@ -1,17 +1,6 @@
 # HTTP server playground
 
 # Development:
-## gunicorn's garden: 
-* cd gunicorns-garden
-* virtualenv venv-guni -p python3
-* source venv-guni/bin/activate
-* pip install -r requirements.txt
-
-## uwsgi's garden: 
-* cd uwsgis-garden
-* virtualenv venv-uwsgi -p python3
-* source venv-uwsgi/bin/activate
-* pip install -r requirements.txt
 
 ## werkzeug's garden: 
 * cd werkzeugs-garden
@@ -25,8 +14,12 @@
 * source venv-tor/bin/activate
 * pip install -r requirements.txt
 
+## sample-host
+* cd sample-host
+* npm install
+* ./farm-runner (on windows farm-runner.bat)
+
 # Docs:
-* gunicorn: https://github.com/benoitc/gunicorn
-* uwsgi: https://uwsgi-docs.readthedocs.io/en/latest/WSGIquickstart.html
 * werkzeug: http://werkzeug.pocoo.org/
 * tornado: https://github.com/tornadoweb/tornado
+
