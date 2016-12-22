@@ -93,3 +93,5 @@ venv-*/
 # IDE and text editors
 .idea/
 .vscode/
+
+node_modules/
