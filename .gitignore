@@ -88,3 +88,8 @@ venv-*/
 
 # Rope project settings
 .ropeproject
+
+
+# IDE and text editors
+.idea/
+.vscode/
