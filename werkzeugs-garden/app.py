@@ -12,9 +12,8 @@ last_route_index = -1
 @Request.application
 def application(request):
 
-    # f_url = get_forward_url(request.full_path)
-    f_url = "localhost:5001"
-    hostname, port = parse_host_port(f_url)
+    f_url = get_forward_url(request.full_path)
+    hostname, port = parse_host_port(f_url) 
 
     print("route - {} >> {} ".format(request.full_path, f_url))
 
