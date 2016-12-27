@@ -1,5 +1,4 @@
 import http.client
-import re
 import urllib
 import urllib.parse
 import json
@@ -11,17 +10,34 @@ last_route_index = -1
 
 @Request.application
 def application(request):
+    response = forward_request(request)
+    return response
 
+
+def forward_request(request):
+    f_response = proxy_request(request)   
+    content = f_response.read()
+    status = f_response.status
+    content_type = f_response.getheader('content-type')
+    
+    response = Response(content, status=status, content_type=content_type)    
+    response.headers.clear()
+
+    for key, value in f_response.getheaders():
+        response.headers[key] = value
+
+    return response
+
+
+def proxy_request(request):
     f_host = get_forward_host()
-
     print("route - {} >> {} ".format(request.full_path, f_host))
-
 
     f_request_headers = dict(request.headers)
 
     if request.method == "POST" or request.method == "PUT":
         form_data = list(iterform(request.form))
-        form_data = urllib.urlencode(form_data)
+        form_data = urllib.parse.urlencode(form_data)
         f_request_headers["Content-Length"] = len(form_data)
     else:
         form_data = None
@@ -29,20 +45,7 @@ def application(request):
     f_connection = http.client.HTTPConnection(f_host)
     f_connection.request(request.method, request.full_path, body=form_data, headers=f_request_headers)
     f_response = f_connection.getresponse()
-    
-    content = f_response.read()
-    status = f_response.status
-    content_type = f_response.getheader('content-type')
-    
-    response = Response(content, status=status, content_type=content_type)
-    response.headers.clear()
-
-    for key, value in f_response.getheaders():
-        response.headers[key] = value
-
-    
-
-    return response
+    return f_response
 
 
 def iterform(multidict):
