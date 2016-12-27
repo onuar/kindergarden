@@ -12,10 +12,9 @@ last_route_index = -1
 @Request.application
 def application(request):
 
-    f_url = get_forward_url(request.full_path)
-    hostname, port = parse_host_port(f_url) 
+    f_host = get_forward_host()
 
-    print("route - {} >> {} ".format(request.full_path, f_url))
+    print("route - {} >> {} ".format(request.full_path, f_host))
 
 
     f_request_headers = dict(request.headers)
@@ -27,7 +26,7 @@ def application(request):
     else:
         form_data = None
 
-    f_connection = http.client.HTTPConnection(hostname,port)
+    f_connection = http.client.HTTPConnection(f_host)
     f_connection.request(request.method, request.full_path, body=form_data, headers=f_request_headers)
     f_response = f_connection.getresponse()
     
@@ -35,11 +34,13 @@ def application(request):
     status = f_response.status
     content_type = f_response.getheader('content-type')
     
-    response = Response(content, status=status, mimetype=content_type, content_type=content_type)
+    response = Response(content, status=status, content_type=content_type)
     response.headers.clear()
 
     for key, value in f_response.getheaders():
         response.headers[key] = value
+
+    
 
     return response
 
@@ -48,14 +49,6 @@ def iterform(multidict):
     for key in multidict.keys():
         for value in multidict.getlist(key):
             yield (key.encode("utf8"), value.encode("utf8"))
-
-def parse_host_port(h):
-    host_port = h.split(":", 1)
-    if len(host_port) == 1:
-        return (h, 80)
-    else:
-        host_port[1] = int(host_port[1])
-        return host_port
 
 def get_next_route_index():
     global last_route_index
@@ -71,7 +64,15 @@ def get_next_route_index():
 
 def get_forward_url(request_path):
     next_route_index = get_next_route_index()
-    return routing_map["nodes"][next_route_index] + "" + request_path
+    url = routing_map["nodes"][next_route_index]
+    if request_path != None:
+         url = url + "" + request_path
+    return url
+
+def get_forward_host():
+    next_route_index = get_next_route_index()
+    url = routing_map["nodes"][next_route_index]
+    return url
 
 
 if __name__ == '__main__':
