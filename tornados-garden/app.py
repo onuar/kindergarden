@@ -13,9 +13,6 @@ class EntryPoint(RequestHandler):
         with open("routing-map-tor.json", "r") as config_file:
             self.nodes = json.load(config_file)
 
-    def prepare(self):
-        print("beginning of the request")
-
     @tornado.web.asynchronous
     def get(self):
         self.write_log()
@@ -48,11 +45,13 @@ class EntryPoint(RequestHandler):
         client.fetch(request, response_callback)
 
     def get_node(self):
-        url = self.nodes["nodes"][self.last_node_index]
-        self.last_node_index += 1
+        url = self.nodes["nodes"][EntryPoint.last_node_index]
+        EntryPoint.last_node_index += 1
 
-        if self.last_node_index >= len(self.nodes["nodes"]):
-            self.last_node_index = 0
+        if EntryPoint.last_node_index >= len(self.nodes["nodes"]):
+            EntryPoint.last_node_index = 0
+
+        print(url)
         return url
 
     def write_log(self):
