@@ -84,4 +84,4 @@ if __name__ == '__main__':
         routing_map = json.load(json_data)
 
     from werkzeug.serving import run_simple
-    run_simple('localhost', port, application)
+    run_simple('localhost', port, application, use_reloader=True, threaded=True)
