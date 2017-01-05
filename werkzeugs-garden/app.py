@@ -4,6 +4,7 @@ import urllib.parse
 import json
 from werkzeug.wrappers import Request, Response
 
+port = 9999
 routing_map = {}
 last_route_index = -1
 
@@ -34,7 +35,7 @@ def proxy_request(request):
     print("route - {} >> {} ".format(request.full_path, f_host))
 
     f_request_headers = dict(request.headers)
-
+    
     if request.method == "POST" or request.method == "PUT":
         form_data = list(iterform(request.form))
         form_data = urllib.parse.urlencode(form_data)
@@ -83,4 +84,4 @@ if __name__ == '__main__':
         routing_map = json.load(json_data)
 
     from werkzeug.serving import run_simple
-    run_simple('localhost', 8000, application)
+    run_simple('localhost', port, application)
