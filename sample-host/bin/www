@@ -9,7 +9,7 @@ var debug = require('debug')('sample-host:server');
 var http = require('http');
 
 /**
- * Get port from environment and store in Express.
+ * Get port from arguments and store in Express.
  */
 
 var port = normalizePort(process.argv[2]);
