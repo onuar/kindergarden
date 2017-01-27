@@ -18,6 +18,10 @@ class EntryPoint(RequestHandler):
         self.write_log()
         self.dispatch_internal(response_callback=self.response_handler)
 
+    def post(self):
+        self.write_log()
+        self.dispatch_internal(response_callback=self.response_handler)
+
     def response_handler(self, response):
         self.set_status(response.code)
         self._headers = tornado.httputil.HTTPHeaders()
@@ -55,7 +59,7 @@ class EntryPoint(RequestHandler):
         return url
 
     def write_log(self):
-        print(self.request.uri)
+        print("{} {}".format(self.request.method, self.request.uri))
 
 
 def make_app():
